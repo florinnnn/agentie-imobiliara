@@ -1,0 +1,230 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+
+void firstPage();
+void secondPage();
+void menu();
+void option1();
+void option2();
+void option3();
+void option4();
+
+typedef struct Firma{
+    char cod[5], nume[21], adresa[30], telefon[10];
+}firma;
+
+typedef struct Angajat{
+    char nume[10], prenume[10], sediu[15];
+}angajat;
+
+typedef struct Clienti{
+    int a;
+}client;
+
+void option1(){
+    FILE *det_firma = fopen("detalii_firma.csv", "r");
+    if(det_firma == NULL){
+        perror("Unable to open the file");
+        exit(1);
+    }
+    char line[200];
+    while(fgets(line, sizeof(line), det_firma)){
+        char *token;
+
+        token = strtok(line, ",");
+
+        while(token != NULL){
+            if(!strcmp(token, "nume"))
+                printf("Nume firma: ");
+            
+            else if(!strcmp(token, "cod"))
+                printf("Codul firmei: ");
+            else
+                printf("%s ", token);
+            token = strtok(NULL, ",");
+        }
+        printf("\n");
+    }
+    fclose(det_firma);
+    printf("Acest fisier nu se poate modifica.\n"
+    "Apasa 0 daca doresti sa mergi inapoi.  ");
+    int n;
+    scanf("%d", &n);
+    if(n == 0)
+        firstPage();
+}
+
+void option2(){
+    FILE *ang_sed = fopen("angajati_sedii.csv", "r");
+    if(ang_sed == NULL){
+        perror("Unable to open the file");
+        exit(1);
+    }
+    char line[200];
+    while(fgets(line, sizeof(line), ang_sed)){
+        char *token;
+        int c = 0;
+
+        token = strtok(line, ",");
+
+        while(token != NULL){
+            if(c == 0){
+                printf("Nume angajat: %s\t", token);
+                c = 1;
+            }
+            else printf("Sediu lucru: %s\n", token);
+            token = strtok(NULL, ",");
+        }
+        printf("\n");
+    }
+    fclose(ang_sed);
+
+    int option;
+    printf("1 adaugare\n2 stergere\n3 back\n"); 
+    scanf("%d", &option);
+    switch (option)
+    {
+    case 1:
+        ang_sed = fopen("angajati_sedii.csv", "a");
+        char nume[21], sediu[21];
+        printf("Introduceti numele: ");
+        scanf("%s", nume);
+        printf("Introduceti sediul: ");
+        scanf("%s", sediu);//fara&
+        printf("\n");
+        fprintf(ang_sed, "\n%s,%s", nume, sediu);
+        fclose(ang_sed);
+        option2();
+        break;
+    case 2:
+        printf("E IN LUCRU\n");
+    case 3:
+        firstPage();
+        break;
+    
+    default:
+        break;
+    }
+}
+
+void option3(){
+    FILE *clienti = fopen("clienti.csv", "r");
+    if(clienti == NULL){
+        perror("Unable to open the file");
+        exit(1);
+    }
+    char line[200];
+    while(fgets(line, sizeof(line), clienti)){
+        char *token;
+        int c = 0;
+
+        token = strtok(line, ",");
+
+        while(token != NULL){
+            if(c == 0)
+                printf("Numele clientului: %s\n", token);
+            else if(c == 1){
+                if(!strcmp(token, "fizic"))
+                    printf("Persoana fizica.\n");
+                else
+                    printf("Firma.\n");
+            }
+            else if(c == 2){
+                if(!strcmp(token, "-1"))
+                    printf("Clientul are contract pe o perioada nedeterminata.\n\n");
+                else if(!strcmp(token, "0"))
+                    printf("Clientul nu mai are contract.\n\n");
+                else
+                    printf("Clientul are contract pe %s.\n\n", token);
+            }
+            c++;
+            token = strtok(NULL, ",");
+        }
+        printf("\n");
+    }
+    fclose(clienti);
+    
+    int opt;
+    printf("1 adauga\n2 back\n");
+    scanf("%d", &opt);
+    switch (opt)
+    {
+    case 1:
+        clienti = fopen("clienti.csv", "a");
+        fprintf(clienti, "\n");
+        char nume[21], tip_client[10], perioada[10];
+        printf("Introduceti numele clientului: ");
+        scanf("%s", nume);
+        printf("Introduceti tipul clientului (fizic/firma): ");
+        scanf("%s", tip_client);
+        fprintf(clienti, "%s,%s,", nume, tip_client);
+        printf("Introduceti perioada contractului (nedeterminat/perioada/nu are contract): ");
+        scanf("%s", perioada);
+        
+        if(!strcmp(perioada, "nedeterminat"))
+            fprintf(clienti, "-1\n");
+        else if(!strcmp(perioada, "nu are contract"))
+            fprintf(clienti, "nu\n");
+        else
+            fprintf(clienti, "%s\n", perioada);
+        option3();
+        break;
+    case 2:
+        firstPage();
+        break;
+    default:
+        break;
+    }
+}
+
+void option4(){
+    char yesno[1];
+    printf("Esti sigur ca vrei sa iesi? [y/n] ");
+    scanf("%s", yesno);
+    if(!strcmp(yesno, "n")){
+        firstPage();
+    }
+}
+
+void secondPage(int option){
+    switch (option)
+    {
+    case 1:
+        option1();
+        break;
+    case 2:
+        option2();
+        break;
+    case 3:
+        option3();
+        break;
+    case 0:
+        option4();
+        break;
+    default:
+        break;
+    }
+    
+}
+
+void menu(){
+    printf("1 detalii firma \n2 angajati \n3 clienti\n4 imobile\n0 iesire\n");
+}
+
+void firstPage(){
+    menu();
+    int option;
+    scanf("%d", &option);
+    while(option < 0 || option > 4){
+        menu();
+        scanf("%d", &option);
+    }
+    secondPage(option);
+}
+
+int main(){
+    firstPage();
+    return 0;
+}
