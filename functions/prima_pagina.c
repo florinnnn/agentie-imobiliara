@@ -33,7 +33,7 @@ void menu(){
     printf("1 detalii firma \n2 angajati \n3 clienti\n4 imobile\n0 iesire\n");
 }
 void firstPage(){
-    //system("cls");
+    system("cls");
     menu();
     int option;
     scanf("%d", &option);
