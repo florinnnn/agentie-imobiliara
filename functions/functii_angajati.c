@@ -119,8 +119,7 @@ void option2(){
     case 2:
         system("cls");
         print_angajati(date_angajat, row);
-        printf("Introduceti indexul angajatului pe care doriti sa-l stergeti\n");
-        
+        printf("Introduceti indexul angajatului pe care doriti sa-l stergeti\n"); 
         int i;
         scanf("%d", &i);
         sterge_angajat(date_angajat, row - 1, i - 1);
