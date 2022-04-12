@@ -104,7 +104,7 @@ void option4(){
     int row = 0;
     while(fgets(line, sizeof(line), imobile)){
         char *token = strtok(line, ",");
-        int field = 0;
+        int field = -1;
         while(token != NULL){
             if (field == 0){
                 strcpy(date_imobil[row].judet, token);

@@ -63,6 +63,60 @@ void sterge_angajat(angajat s[], int len, int start_pos){
     rename("data/temp.csv", "data/angajati_sedii.csv");
 }
 
+void afisare_oferte_angajat(angajat ang, int i){
+    FILE *imobile = fopen("data/imobile.csv", "r");
+    if(imobile == NULL){
+        perror("Eroare");
+        exit(1);
+    }
+    char line[1024];
+    while(fgets(line, sizeof(line), imobile)){
+        char *token = strtok(line, ",");
+        int field = -1;
+        while(token != NULL){
+            int si = 0;
+            if(field == -1){
+                si = atoi(token);
+                field++;
+                if(si != i)
+                    break;
+                else continue;
+            }
+            
+            char date_imobil[200], oras[200], judet[200];
+            if(field == 0)
+                strcpy(judet, token);
+            else if(field == 1)
+                strcpy(oras, token);
+            else if(field == 2){
+                strcpy(date_imobil, token);
+                printf("\n%s de", date_imobil);
+            }
+            else if(field == 3){
+                strcpy(date_imobil, token);
+                printf(" %s la pretul ", date_imobil);
+            }
+            else if(field == 4){
+                si = atoi(token);
+                printf("%d | ", si);
+            }
+            else if(field == 5){
+                si = atoi(token);
+                printf("%d m^2 si ", si);
+            }
+            else{
+                si = atoi(token);
+                printf("%d camere | Judet: %s Oras: %s\n", si, judet, oras);
+            }
+            field++;
+            token = strtok(NULL, ",");
+        }
+    }
+    fclose(imobile);
+
+
+}
+
 void option2(){
     system("cls");
     FILE *ang_sed = fopen("data/angajati_sedii.csv", "r");
@@ -98,7 +152,7 @@ void option2(){
     }
     
     int option;
-    printf("\n1 adaugare\n2 stergere\n3 back\n"); 
+    printf("\n1 adaugare\n2 stergere\n3 oferte asignate\n4 back\n"); 
     scanf("%d", &option);
     switch (option)
     {
@@ -127,6 +181,18 @@ void option2(){
         option2();
         break;
     case 3:
+        system("cls");
+        print_angajati(date_angajat, row);
+        printf("\nIntroduceti indexul angajatului..");
+        int ind;
+        scanf("%d", &ind);
+        afisare_oferte_angajat(date_angajat[ind-1], ind);
+        printf("apasa ceva");
+        getch();
+        option2();
+        break;
+    
+    case 4:
         firstPage();
         break;
     default:
