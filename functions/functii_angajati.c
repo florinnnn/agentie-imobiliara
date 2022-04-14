@@ -64,12 +64,16 @@ void sterge_angajat(angajat s[], int len, int start_pos){
 }
 
 void afisare_oferte_angajat(angajat ang, int i){
+    system("cls");
+    printf("Angajatul %s de la sediul %s are repartizate urmatoarele imobile: \n\n", ang.nume, ang.sediu);
+    
     FILE *imobile = fopen("data/imobile.csv", "r");
     if(imobile == NULL){
         perror("Eroare");
         exit(1);
     }
     char line[1024];
+    int contor = 0;
     while(fgets(line, sizeof(line), imobile)){
         char *token = strtok(line, ",");
         int field = -1;
@@ -82,6 +86,7 @@ void afisare_oferte_angajat(angajat ang, int i){
                 field = 0;
                 if(si == i){
                     token = strtok(NULL, ",");
+                    contor++;
                     continue;
                 }
                 break;
@@ -95,7 +100,7 @@ void afisare_oferte_angajat(angajat ang, int i){
             }
             else if(field == 2){
                 strcpy(date_imobil, token);
-                printf("\n%s de", date_imobil);
+                printf("\t%s de", date_imobil);
             }
             else if(field == 3){
                 strcpy(date_imobil, token);
@@ -111,15 +116,16 @@ void afisare_oferte_angajat(angajat ang, int i){
             }
             else{
                 si = atoi(token);
-                printf("%d camere | Judet: %s Oras: %s\n", si, judet, oras);
+                printf("%d camere | Judet: %s Oras: %s\n\n", si, judet, oras);
             }
             field++;
             token = strtok(NULL, ",");
         }
     }
     fclose(imobile);
-
-
+    if(contor == 0){
+        printf("\nAngajatul selectat nu are nici o oferta repartizata!\n");
+    }
 }
 
 void option2(){
@@ -157,7 +163,7 @@ void option2(){
     }
     
     int option;
-    printf("\n1 adaugare\n2 stergere\n3 oferte asignate\n4 back\n"); 
+    printf("\n1 Adaugare angajat\n2 Stergere angajat\n3 Oferte repartizate\n4 Inapoi\n"); 
     scanf("%d", &option);
     switch (option)
     {
@@ -178,9 +184,13 @@ void option2(){
     case 2:
         system("cls");
         print_angajati(date_angajat, row);
-        printf("Introduceti indexul angajatului pe care doriti sa-l stergeti\n"); 
+        printf("Introduceti indexul angajatului pe care doriti sa-l stergeti (0 - cancel)\nIn cazul in care introduceti un index mai mare decat indexul ultimului angajat, se va sterge ultimul\nla fel si la primul angajat");
         int i;
         scanf("%d", &i);
+        if(i == 0){
+            option2();
+            break;
+        }
         sterge_angajat(date_angajat, row - 1, i - 1);
         printf("\n");
         option2();
@@ -188,11 +198,15 @@ void option2(){
     case 3:
         system("cls");
         print_angajati(date_angajat, row);
-        printf("\nIntroduceti indexul angajatului..");
+        printf("\nIntroduceti indexul angajatului: ");
         int ind;
         scanf("%d", &ind);
-        afisare_oferte_angajat(date_angajat[ind-1], ind);
-        printf("apasa ceva");
+        if(ind > row || ind < 1){
+            printf("\nAngajatul nu exista!\n");
+        }
+        else
+            afisare_oferte_angajat(date_angajat[ind-1], ind);
+        printf("Pentru a te reintoarce la meniul de angajati apasa orice ");
         getch();
         option2();
         break;

@@ -36,7 +36,7 @@ void adaugare_imobil(imobil date_imobil[], imobil im, int len){
     }
     FILE *temp = fopen("data/temp.csv", "w");
     for(i = 0; i <= len; i++){
-        fprintf(temp, "%s,%s,%s,%s,%d,%d,%d\n", date_imobil[i].judet, date_imobil[i].oras, date_imobil[i].tip, date_imobil[i].vanz_inch, date_imobil[i].pret, date_imobil[i].suprafata, date_imobil[i].nr_camere);
+        fprintf(temp, "%d,%s,%s,%s,%s,%d,%d,%d\n", date_imobil[i].asign, date_imobil[i].judet, date_imobil[i].oras, date_imobil[i].tip, date_imobil[i].vanz_inch, date_imobil[i].pret, date_imobil[i].suprafata, date_imobil[i].nr_camere);
     }
     fclose(temp);
     remove("data/imobile.csv");
@@ -55,7 +55,7 @@ void stergere_imobil(imobil date_imobil[], int len, int start_pos){
         return;
     }
     for(int i = 0; i < len; i++){
-        fprintf(tmp, "%s,%s,%s,%s,%d,%d,%d\n", date_imobil[i].judet, date_imobil[i].oras, date_imobil[i].tip, date_imobil[i].vanz_inch, date_imobil[i].pret, date_imobil[i].suprafata, date_imobil[i].nr_camere);
+        fprintf(tmp, "%d,%s,%s,%s,%s,%d,%d,%d\n", date_imobil[i].asign, date_imobil[i].judet, date_imobil[i].oras, date_imobil[i].tip, date_imobil[i].vanz_inch, date_imobil[i].pret, date_imobil[i].suprafata, date_imobil[i].nr_camere);
     }
     fclose(tmp);
     remove("data/imobile.csv");
@@ -165,7 +165,7 @@ void option4(){
     fclose(imobile);
     print_imobile(date_imobil, row);
     int opt;
-    printf("\n1 adaugare\n2 stergere\n3 afisare judet\n4 afisare oras\n5 back\n");
+    printf("\n1 Adaugare imobil\n2 Stergere imobil\n3 Afisare dupa judet\n4 Afisare dupa oras\n5 Inapoi\n");
     scanf("%d", &opt);
     switch(opt){
         case 1:

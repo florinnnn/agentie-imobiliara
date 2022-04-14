@@ -30,10 +30,10 @@ void secondPage(int option){
     
 }
 void menu(){
-    printf("1 detalii firma \n2 angajati \n3 clienti\n4 imobile\n0 iesire\n");
+    printf("1 Detalii firma \n2 Detalii angajati \n3 Detalii clienti\n4 Imobile disponibile\n0 Iesire\n");
 }
 void firstPage(){
-   // system("cls");
+    system("cls");
     menu();
     int option;
     scanf("%d", &option);

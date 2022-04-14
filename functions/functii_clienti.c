@@ -116,7 +116,7 @@ void option3(){
     printClienti(date_clienti, row);
     
     int opt;
-    printf("1 adauga\n2 sterge\n3 back\n");
+    printf("1 Adaugare client\n2 Stergere client\n3 Inapoi\n");
     scanf("%d", &opt);
     switch (opt)
     {
