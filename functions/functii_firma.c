@@ -1,5 +1,5 @@
 typedef struct firma{
-    char nume[211], adresa[310], telefon[101];
+    char nume[211], strada[310], numar[300], telefon[101];
     long long int cod;
 }firma;
 
@@ -7,7 +7,7 @@ void printFirma(firma df){
     fflush(stdin);
     printf("Nume firma: %s\n", df.nume);
     printf("Cod fiscal: %lli\n\n", df.cod);
-    printf("Adresa: %s\n", df.adresa);
+    printf("Adresa: %s, %s\n", df.strada, df.numar);
     printf("Telefon: %s\n\n", df.telefon);
 }
 void option1(){
@@ -35,7 +35,10 @@ void option1(){
             }
             
             else if(row == 3 && field == 1)
-                strcpy(df.adresa, token);
+                strcpy(df.strada, token);
+
+            else if(row == 3 && field == 2)
+                strcpy(df.numar, token);
 
             else if(row == 4 && field == 1)
                 strcpy(df.telefon, token);
