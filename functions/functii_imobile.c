@@ -1,6 +1,6 @@
 typedef struct imobil{
     char judet[100], oras[100], tip[100], vanz_inch[100];
-    int pret, suprafata, nr_camere;
+    int asign, pret, suprafata, nr_camere;
 } imobil;
 
 void print_imobile(imobil date_imobil[], int len){
@@ -92,6 +92,33 @@ void afisare_oras(imobil date_imobil[], char oras[], int len){
     getch();
 }
 
+int citire_afisare_angajati(){
+    FILE *angajati = fopen("data/angajati_sedii.csv", "r");
+    if(angajati == NULL){
+        perror("Unable to open the file");
+        exit(1);
+    }
+    char line[1024];
+    int row = 0;
+    while(fgets(line, sizeof(line), angajati)){
+        char *token;
+        int field = 0;
+        token = strtok(line, ",");
+        while(token != NULL){
+            if(field == 0){
+                printf("%d. Nume: %s", row + 1, token);
+            }
+            else
+                printf(" | Sediu: %s\n", token);
+            field++;
+            token = strtok(NULL, ",");
+        }
+        row++;
+    }
+    fclose(angajati);
+    return row;
+}
+
 void option4(){
     system("cls");
     FILE *imobile = fopen("data/imobile.csv", "r");
@@ -106,7 +133,10 @@ void option4(){
         char *token = strtok(line, ",");
         int field = -1;
         while(token != NULL){
-            if (field == 0){
+            if(field == -1){
+                date_imobil[row].asign = atoi(token);
+            }
+            else if (field == 0){
                 strcpy(date_imobil[row].judet, token);
             }
             else if(field == 1){
@@ -141,6 +171,7 @@ void option4(){
         case 1:
             system("cls");
             imobil im;
+            int angajat_asignat;
             printf("Introduceti timpul imobilului: ");
             fflush(stdin);
             gets(im.tip);
@@ -161,6 +192,14 @@ void option4(){
             printf("Orasul in care se afla imobilul este: ");
             gets(im.oras);
             fflush(stdin);
+            int lungime = citire_afisare_angajati();
+            printf("Cui doresti sa-i asignezi acest contract:\n");
+            scanf("%d", &im.asign);
+            while(im.asign < 1 || im.asign > lungime){
+                printf("Trebuie sa introduceti un index in intervalul %d-%d.\n", 1, lungime);
+                printf("Introduceti din nou indexul: ");
+                scanf("%d", &im.asign);
+            }
             adaugare_imobil(date_imobil, im, row);
             option4();
             break;

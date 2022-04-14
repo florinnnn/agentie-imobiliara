@@ -73,21 +73,26 @@ void afisare_oferte_angajat(angajat ang, int i){
     while(fgets(line, sizeof(line), imobile)){
         char *token = strtok(line, ",");
         int field = -1;
+        char date_imobil[200], oras[200], judet[200];
+
         while(token != NULL){
             int si = 0;
             if(field == -1){
                 si = atoi(token);
-                field++;
-                if(si != i)
-                    break;
-                else continue;
+                field = 0;
+                if(si == i){
+                    token = strtok(NULL, ",");
+                    continue;
+                }
+                break;
             }
             
-            char date_imobil[200], oras[200], judet[200];
-            if(field == 0)
+            if(field == 0){
                 strcpy(judet, token);
-            else if(field == 1)
+            }
+            else if(field == 1){
                 strcpy(oras, token);
+            }
             else if(field == 2){
                 strcpy(date_imobil, token);
                 printf("\n%s de", date_imobil);
