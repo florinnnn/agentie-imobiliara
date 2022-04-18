@@ -34,8 +34,6 @@ void adaugare_client(client date_client[], client c, int len){
             }
         }
     }
-   // printf("\ntest %s %s %s\n", date_client[1].nume, date_client[1].perioada, date_client[1].tip);
-   //printClienti(date_client, len+1);
     FILE *temp = fopen("data/temp.csv", "w");
     
     fprintf(temp, "%s,%s,", date_client[0].nume, date_client[0].tip);
@@ -51,7 +49,6 @@ void adaugare_client(client date_client[], client c, int len){
         else
             fprintf(temp, "%s", date_client[i].perioada);
     }
-    //fprintf(tmp, "%")
     fclose(temp);
     remove("data/clienti.csv");
     rename("data/temp.csv", "data/clienti.csv");
@@ -73,7 +70,6 @@ void sterge_client(client date_client[], int len, int start_pos){
     for(int i = 1; i < len; i++){
         fprintf(tmp,"%s,%s,%s", date_client[i].nume, date_client[i].tip, date_client[i].perioada);
     }
-    //fprintf(tmp, "%")
     fclose(tmp);
     remove("data/clienti.csv");
     rename("data/temp.csv", "data/clienti.csv");
