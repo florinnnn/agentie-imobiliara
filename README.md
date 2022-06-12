@@ -1,5 +1,7 @@
 # Agentie imobiliara
 
+Anul 1 | Sem 2 | Proiect de programare
+
 - Aplicatie ce contine informatii despre o agentie imobiliara
 - Meniu cu ajutorul caruia se pot citii diferite informatii despre:
   - Firma;
