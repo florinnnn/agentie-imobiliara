@@ -63,6 +63,30 @@ void sterge_angajat(angajat s[], int len, int start_pos){
     rename("data/temp.csv", "data/angajati_sedii.csv");
 }
 
+void modificare_angajat(angajat ang[], int len, int i){
+    system("cls");
+    angajat new_ang;
+    printf("Introduceti noul nume: ");
+    fflush(stdin);
+    gets(new_ang.nume);
+    printf("Introduceti noul sediu: ");
+    fflush(stdin);
+    gets(new_ang.sediu);
+    strcat(new_ang.sediu, "\n");
+    ang[i] = new_ang;
+    FILE *temp = fopen("data/temp.csv", "w");
+    fprintf(temp, "%s,%s", ang[0].nume, ang[0].sediu);
+
+    for(int i = 1; i <= len; i++){
+        fprintf(temp,"%s,%s", ang[i].nume, ang[i].sediu);
+    }
+
+
+    fclose(temp);
+    remove("data/angajati_sedii.csv");
+    rename("data/temp.csv", "data/angajati_sedii.csv");
+}
+
 void afisare_oferte_angajat(angajat ang, int i){
     system("cls");
     printf("Angajatul %s de la sediul %s are repartizate urmatoarele imobile: \n\n", ang.nume, ang.sediu);
@@ -163,7 +187,7 @@ void option2(){
     }
     
     int option;
-    printf("\n1 Adaugare angajat\n2 Stergere angajat\n3 Oferte repartizate\n4 Inapoi\n"); 
+    printf("\n1 Adaugare angajat\n2 Stergere angajat\n3 Modificare angajat\n4 Oferte repartizate\n5 Inapoi\n"); 
     scanf("%d", &option);
     switch (option)
     {
@@ -198,6 +222,20 @@ void option2(){
     case 3:
         system("cls");
         print_angajati(date_angajat, row);
+        printf("Introduceti indexul angajatului pe care doriti sa-l modificati (0 - cancel)");
+        int index;
+        scanf("%d", &index);
+        if(index == 0){
+            option2();
+            break;
+        }
+        modificare_angajat(date_angajat, row - 1, index - 1);
+
+        option2();
+        break;
+    case 4:
+        system("cls");
+        print_angajati(date_angajat, row);
         printf("\nIntroduceti indexul angajatului: ");
         int ind;
         scanf("%d", &ind);
@@ -211,7 +249,7 @@ void option2(){
         option2();
         break;
     
-    case 4:
+    case 5:
         firstPage();
         break;
     default:
